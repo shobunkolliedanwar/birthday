@@ -422,6 +422,39 @@
       animation: scrollcue 1.8s ease-in-out infinite;
     }
 
+    #hero h1 .accent {
+      display: inline-block;
+      font-family: var(--font-script);
+      font-size: 1.05em;
+      font-weight: 400;
+      margin-top: 6px;
+
+      background: linear-gradient(90deg,
+          #ffb6c1 0%,
+          #ffffff 25%,
+          #ff69b4 50%,
+          #ffffff 75%,
+          #ffb6c1 100%);
+
+      background-size: 250% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+
+      animation:
+        shimmer 5s linear infinite,
+        glowPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      from {
+        background-position: -250% center;
+      }
+
+      to {
+        background-position: 250% center;
+      }
+    }
+
     @keyframes scrollcue {
       0% {
         transform: scaleY(.4);

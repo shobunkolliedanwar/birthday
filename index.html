@@ -1427,6 +1427,391 @@
       outline: 2px solid var(--gold);
       outline-offset: 3px;
     }
+
+    /* ================================================================
+       PREMIUM ENHANCEMENT LAYER
+       ================================================================ */
+
+    /* ---------- cinematic grain + vignette ---------- */
+    #grain-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      pointer-events: none;
+      opacity: .045;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+      animation: grainShift 1s steps(4) infinite;
+    }
+
+    @keyframes grainShift {
+      0% {
+        transform: translate(0, 0);
+      }
+
+      25% {
+        transform: translate(-1%, 1%);
+      }
+
+      50% {
+        transform: translate(1%, -1%);
+      }
+
+      75% {
+        transform: translate(-1%, -1%);
+      }
+
+      100% {
+        transform: translate(0, 0);
+      }
+    }
+
+    #vignette-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 39;
+      pointer-events: none;
+      background: radial-gradient(120% 100% at 50% 45%, transparent 55%, rgba(2, 4, 10, .55) 100%);
+    }
+
+    /* ---------- soft petals / falling hearts ---------- */
+    #petal-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .petal {
+      position: absolute;
+      top: -40px;
+      will-change: transform, opacity;
+      opacity: 0;
+      filter: drop-shadow(0 0 6px rgba(255, 107, 170, .35));
+      animation-name: petalFall;
+      animation-timing-function: linear;
+      animation-fill-mode: forwards;
+    }
+
+    @keyframes petalFall {
+      0% {
+        opacity: 0;
+        transform: translate(0, 0) rotate(0deg);
+      }
+
+      6% {
+        opacity: .85;
+      }
+
+      92% {
+        opacity: .7;
+      }
+
+      100% {
+        opacity: 0;
+        transform: translate(var(--drift, 40px), 108vh) rotate(var(--spin, 220deg));
+      }
+    }
+
+    /* ---------- custom cursor glow (desktop only) ---------- */
+    @media (pointer: fine) {
+      #cursor-glow {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        border: 1px solid var(--primary-dim);
+        pointer-events: none;
+        z-index: 999;
+        transform: translate(-50%, -50%);
+        transition: width .25s ease, height .25s ease, border-color .25s ease, opacity .3s ease;
+        opacity: 0;
+      }
+
+      #cursor-glow.show {
+        opacity: 1;
+      }
+
+      #cursor-glow.active {
+        width: 50px;
+        height: 50px;
+        border-color: var(--primary);
+        background: rgba(255, 107, 170, .08);
+      }
+
+      .cursor-spark {
+        position: fixed;
+        z-index: 998;
+        pointer-events: none;
+        font-size: 12px;
+        color: var(--primary);
+        opacity: .9;
+        will-change: transform, opacity;
+      }
+    }
+
+    /* ---------- refined reveal: blur + rise + settle ---------- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px) scale(.97);
+      filter: blur(10px);
+    }
+
+    /* ---------- magnetic buttons ---------- */
+    .btn {
+      will-change: transform;
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, .35), transparent 60%);
+      opacity: 0;
+      transition: opacity .3s ease;
+      pointer-events: none;
+    }
+
+    .btn:hover::after {
+      opacity: .5;
+    }
+
+    /* ---------- gallery tilt depth ---------- */
+    .gallery-grid {
+      perspective: 1200px;
+    }
+
+    .polaroid {
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .polaroid-photo img {
+      transition: transform .5s ease;
+    }
+
+    .polaroid:hover .polaroid-photo img {
+      transform: scale(1.08);
+    }
+
+    /* ---------- reason card open polish ---------- */
+    .reason-card {
+      transform-style: preserve-3d;
+    }
+
+    .reason-card .reason-icon {
+      transition: transform .45s cubic-bezier(.2, .8, .2, 1);
+      display: inline-block;
+    }
+
+    .reason-card.open .reason-icon {
+      transform: scale(1.3) rotate(-8deg);
+      animation: iconPulse 1.6s ease-in-out infinite;
+    }
+
+    @keyframes iconPulse {
+
+      0%,
+      100% {
+        transform: scale(1.3) rotate(-8deg);
+      }
+
+      50% {
+        transform: scale(1.42) rotate(-8deg);
+      }
+    }
+
+    /* ---------- music player equalizer ---------- */
+    .mp-eq {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 14px;
+      margin-right: 2px;
+    }
+
+    .mp-eq span {
+      width: 2.5px;
+      background: var(--gold);
+      border-radius: 2px;
+      height: 4px;
+      opacity: .5;
+    }
+
+    #music-player.playing .mp-eq span {
+      animation: eqBounce 1s ease-in-out infinite;
+      opacity: 1;
+    }
+
+    #music-player.playing .mp-eq span:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    #music-player.playing .mp-eq span:nth-child(2) {
+      animation-delay: .18s;
+    }
+
+    #music-player.playing .mp-eq span:nth-child(3) {
+      animation-delay: .34s;
+    }
+
+    @keyframes eqBounce {
+
+      0%,
+      100% {
+        height: 4px;
+      }
+
+      50% {
+        height: 14px;
+      }
+    }
+
+    /* ---------- countdown flip pulse ---------- */
+    .cd-num {
+      display: inline-block;
+      transition: transform .3s ease;
+    }
+
+    .cd-num.tick {
+      animation: numTick .45s cubic-bezier(.2, .8, .2, 1);
+    }
+
+    @keyframes numTick {
+      0% {
+        transform: translateY(0) scale(1);
+        filter: brightness(1);
+      }
+
+      35% {
+        transform: translateY(-10px) scale(1.15);
+        filter: brightness(1.6);
+        text-shadow: 0 0 18px var(--gold);
+      }
+
+      100% {
+        transform: translateY(0) scale(1);
+        filter: brightness(1);
+      }
+    }
+
+    /* ---------- letter section candle glow ---------- */
+    .letter-paper {
+      transition: box-shadow 1.2s ease;
+    }
+
+    .letter-paper.lit {
+      box-shadow: 0 0 90px -20px rgba(248, 197, 95, .35), 0 0 40px -10px rgba(255, 107, 170, .18);
+    }
+
+    /* ---------- secret button flash ---------- */
+    #flash-pulse {
+      position: fixed;
+      inset: 0;
+      z-index: 79;
+      pointer-events: none;
+      background: radial-gradient(circle at center, rgba(255, 107, 170, .25), transparent 65%);
+      opacity: 0;
+    }
+
+    /* ---------- final surprise candle ---------- */
+    .fs-candle {
+      position: relative;
+      width: 20px;
+      height: 46px;
+      margin: 0 auto 8px;
+      opacity: 0;
+    }
+
+    .fs-candle .wax {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 16px;
+      height: 34px;
+      background: linear-gradient(180deg, #fff3d6, #f3d8a0);
+      border-radius: 2px 2px 4px 4px;
+    }
+
+    .fs-candle .flame {
+      position: absolute;
+      top: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 10px;
+      height: 18px;
+      background: radial-gradient(circle at 50% 70%, #fff6d8, var(--gold) 55%, #ff8a3d 100%);
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      filter: drop-shadow(0 0 10px rgba(248, 197, 95, .9));
+      animation: flicker 2.2s ease-in-out infinite;
+      transform-origin: bottom center;
+    }
+
+    @keyframes flicker {
+
+      0%,
+      100% {
+        transform: translateX(-50%) scale(1) rotate(0deg);
+      }
+
+      25% {
+        transform: translateX(-50%) scale(1.05, .95) rotate(-3deg);
+      }
+
+      50% {
+        transform: translateX(-50%) scale(.95, 1.08) rotate(2deg);
+      }
+
+      75% {
+        transform: translateX(-50%) scale(1.03, .97) rotate(-1deg);
+      }
+    }
+
+    /* ---------- confetti fall on finale ---------- */
+    .confetti-piece {
+      position: fixed;
+      top: -20px;
+      z-index: 78;
+      pointer-events: none;
+      border-radius: 2px;
+      will-change: transform, opacity;
+      animation-name: confettiFall;
+      animation-timing-function: cubic-bezier(.4, 0, .6, 1);
+      animation-fill-mode: forwards;
+    }
+
+    @keyframes confettiFall {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0) rotate(0deg);
+      }
+
+      100% {
+        opacity: 0;
+        transform: translate(var(--cx, 0), 105vh) rotate(var(--cr, 380deg));
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      #grain-overlay,
+      #petal-layer,
+      #cursor-glow,
+      .cursor-spark {
+        display: none !important;
+      }
+    }
+
+    @media (pointer: coarse) {
+      #cursor-glow {
+        display: none;
+      }
+    }
   </style>
 </head>
 
@@ -1437,11 +1822,19 @@
   <canvas id="stars-canvas" aria-hidden="true"></canvas>
   <div class="aurora" aria-hidden="true"></div>
 
+  <!-- ============ PREMIUM AMBIENCE LAYERS ============ -->
+  <div id="grain-overlay" aria-hidden="true"></div>
+  <div id="vignette-overlay" aria-hidden="true"></div>
+  <div id="petal-layer" aria-hidden="true"></div>
+  <div id="cursor-glow" aria-hidden="true"></div>
+  <div id="flash-pulse" aria-hidden="true"></div>
+
   <!-- ============ MUSIC PLAYER ============ -->
   <!-- Replace src below with your own file at /public/music/song.mp3 (or similar) to enable playback -->
   <audio id="bg-audio" loop preload="none" src="/music/music.mp3"></audio>
   <div id="music-player" class="glass" role="group" aria-label="Background music controls">
     <span class="mp-label" id="mp-label">Play Background Music</span>
+    <span class="mp-eq" aria-hidden="true"><span></span><span></span><span></span></span>
     <button id="music-toggle" aria-label="Play background music" aria-pressed="false">🎵</button>
   </div>
 
@@ -1730,6 +2123,10 @@
 
   <!-- ============ FINAL SURPRISE OVERLAY ============ -->
   <div id="final-surprise" aria-hidden="true">
+    <div class="fs-candle" id="fs-candle">
+      <div class="flame"></div>
+      <div class="wax"></div>
+    </div>
     <div class="fs-line" id="fs-line1"> Thank you for taking a little moment to be here. </div>
     <div class="fs-line" id="fs-line2"> Happy Birthday Putri 🌸 </div>
     <div class="fs-heart"> ✨<br> <span
@@ -1853,7 +2250,7 @@
 
       function revealHero() {
         gsap.utils.toArray('#hero .reveal').forEach(function (el, i) {
-          gsap.to(el, { opacity: 1, y: 0, duration: 1, delay: .15 * i, ease: 'power3.out' });
+          gsap.to(el, { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', duration: 1.3, delay: .15 * i, ease: 'power3.out' });
         });
       }
 
@@ -1863,11 +2260,27 @@
         gsap.utils.toArray('.reveal').forEach(function (el) {
           if (el.closest('#hero')) return; // hero handled separately
           gsap.to(el, {
-            opacity: 1, y: 0, duration: 1, ease: 'power3.out',
+            opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', duration: 1.2, ease: 'power3.out',
             scrollTrigger: { trigger: el, start: 'top 85%' }
           });
         });
       }
+
+      /* ===================== HERO PARALLAX (mouse) ===================== */
+      (function heroParallax() {
+        if (prefersReduced || !window.matchMedia('(pointer: fine)').matches) return;
+        var hero = document.getElementById('hero');
+        if (!hero) return;
+        hero.addEventListener('mousemove', function (e) {
+          var r = hero.getBoundingClientRect();
+          var relX = (e.clientX - r.left) / r.width - .5;
+          var relY = (e.clientY - r.top) / r.height - .5;
+          gsap.to(hero, { rotateY: relX * 4, rotateX: -relY * 4, duration: .6, ease: 'power2.out', transformPerspective: 900 });
+        });
+        hero.addEventListener('mouseleave', function () {
+          gsap.to(hero, { rotateY: 0, rotateX: 0, duration: .8, ease: 'power2.out' });
+        });
+      })();
 
       /* ===================== MUSIC PLAYER ===================== */
       var audio = document.getElementById('bg-audio');
@@ -2093,20 +2506,24 @@
       var secretMsg = document.getElementById('secret-message');
       secretBtn.addEventListener('click', function (e) {
         secretMsg.classList.add('show');
+        gsap.fromTo(secretMsg, { y: 14, scale: .96 }, { y: 0, scale: 1, duration: .8, ease: 'power3.out' });
         var rect = secretBtn.getBoundingClientRect();
-        for (var i = 0; i < 14; i++) {
+        var glyphs = ['❤', '✦', '🌸'];
+        for (var i = 0; i < 26; i++) {
           var heart = document.createElement('div');
           heart.className = 'heart-particle';
-          heart.textContent = '❤';
+          heart.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
           heart.style.left = (rect.left + rect.width / 2) + 'px';
           heart.style.top = (rect.top) + 'px';
+          heart.style.fontSize = (14 + Math.random() * 14) + 'px';
           document.body.appendChild(heart);
           gsap.to(heart, {
-            x: (Math.random() - .5) * 260, y: -(80 + Math.random() * 180), opacity: 0, rotate: (Math.random() - .5) * 120,
-            duration: 1.2 + Math.random() * .6, ease: 'power2.out',
+            x: (Math.random() - .5) * 340, y: -(100 + Math.random() * 260), opacity: 0, rotate: (Math.random() - .5) * 200,
+            duration: 1.4 + Math.random() * .8, ease: 'power2.out',
             onComplete: function () { heart.remove(); }
           });
         }
+        gsap.fromTo(secretBtn, { scale: 1 }, { scale: 1.08, duration: .2, yoyo: true, repeat: 1, ease: 'power1.inOut' });
         secretBtn.textContent = 'Thank You 🌸';
       });
 
@@ -2168,16 +2585,169 @@
         setTimeout(function () {
           var overlay = document.getElementById('final-surprise');
           overlay.classList.add('show');
+          var candle = document.getElementById('fs-candle');
           var l1 = document.getElementById('fs-line1');
           var l2 = document.getElementById('fs-line2');
           var heart = overlay.querySelector('.fs-heart');
+          gsap.to(candle, { opacity: 1, duration: 1.2 });
           gsap.to(l1, { opacity: 1, duration: 1.4, delay: .6 });
           gsap.to(l2, { opacity: 1, duration: 1.4, delay: 3.4 });
-          gsap.to(heart, { opacity: 1, duration: 1.4, delay: 6.2 });
+          gsap.to(heart, { opacity: 1, duration: 1.4, delay: 6.2, onComplete: dropConfetti });
           setTimeout(function () { overlay.style.cursor = 'pointer'; }, 8000);
           overlay.addEventListener('click', function () { overlay.classList.remove('show'); });
         }, 30000);
       }
+
+      function dropConfetti() {
+        if (prefersReduced) return;
+        var colors = ['#FF6BAA', '#F8C55F', '#FFFFFF', '#c94e86'];
+        for (var i = 0; i < 60; i++) {
+          (function () {
+            var piece = document.createElement('div');
+            piece.className = 'confetti-piece';
+            var size = 5 + Math.random() * 6;
+            piece.style.width = size + 'px';
+            piece.style.height = (size * (0.4 + Math.random() * 0.8)) + 'px';
+            piece.style.left = (Math.random() * 100) + 'vw';
+            piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+            piece.style.setProperty('--cx', (Math.random() - .5) * 220 + 'px');
+            piece.style.setProperty('--cr', (Math.random() * 600) + 'deg');
+            var dur = 3.2 + Math.random() * 2.4;
+            piece.style.animationDuration = dur + 's';
+            piece.style.animationDelay = (Math.random() * 1.4) + 's';
+            document.body.appendChild(piece);
+            setTimeout(function () { piece.remove(); }, (dur + 1.6) * 1000);
+          })();
+        }
+      }
+
+      /* ===================== PETALS — soft continuous ambience ===================== */
+      (function petals() {
+        if (prefersReduced) return;
+        var layer = document.getElementById('petal-layer');
+        if (!layer) return;
+        var shapes = ['🌸', '✦', '❤', '✧'];
+        function spawn() {
+          var petal = document.createElement('span');
+          petal.className = 'petal';
+          petal.textContent = shapes[Math.floor(Math.random() * shapes.length)];
+          var size = 10 + Math.random() * 14;
+          petal.style.fontSize = size + 'px';
+          petal.style.left = (Math.random() * 100) + 'vw';
+          petal.style.color = Math.random() > 0.5 ? 'var(--primary)' : 'var(--gold)';
+          petal.style.setProperty('--drift', ((Math.random() - .5) * 220) + 'px');
+          petal.style.setProperty('--spin', (Math.random() * 360 + 120) + 'deg');
+          var dur = 9 + Math.random() * 9;
+          petal.style.animationDuration = dur + 's';
+          layer.appendChild(petal);
+          setTimeout(function () { petal.remove(); }, dur * 1000 + 200);
+        }
+        var iv = setInterval(spawn, 1400);
+        for (var i = 0; i < 3; i++) setTimeout(spawn, i * 500);
+      })();
+
+      /* ===================== CUSTOM CURSOR GLOW + SPARK TRAIL ===================== */
+      (function cursorFx() {
+        if (prefersReduced || !window.matchMedia('(pointer: fine)').matches) return;
+        var glow = document.getElementById('cursor-glow');
+        if (!glow) return;
+        var lastSpark = 0;
+        window.addEventListener('mousemove', function (e) {
+          glow.classList.add('show');
+          gsap.to(glow, { x: e.clientX, y: e.clientY, duration: .35, ease: 'power2.out' });
+          var now = Date.now();
+          if (now - lastSpark > 90) {
+            lastSpark = now;
+            var spark = document.createElement('span');
+            spark.className = 'cursor-spark';
+            spark.textContent = '✦';
+            spark.style.left = e.clientX + 'px';
+            spark.style.top = e.clientY + 'px';
+            document.body.appendChild(spark);
+            gsap.to(spark, {
+              y: '+=24', opacity: 0, scale: .4, duration: .9, ease: 'power2.out',
+              onComplete: function () { spark.remove(); }
+            });
+          }
+        });
+        document.querySelectorAll('a, button, .polaroid, .reason-card, .tl-item').forEach(function (el) {
+          el.addEventListener('mouseenter', function () { glow.classList.add('active'); });
+          el.addEventListener('mouseleave', function () { glow.classList.remove('active'); });
+        });
+      })();
+
+      /* ===================== MAGNETIC BUTTONS ===================== */
+      (function magnetic() {
+        if (prefersReduced || !window.matchMedia('(pointer: fine)').matches) return;
+        document.querySelectorAll('.btn').forEach(function (btn) {
+          btn.addEventListener('mousemove', function (e) {
+            var r = btn.getBoundingClientRect();
+            var mx = e.clientX - r.left, my = e.clientY - r.top;
+            var relX = (mx / r.width - .5) * 2, relY = (my / r.height - .5) * 2;
+            gsap.to(btn, { x: relX * 8, y: relY * 8, duration: .3, ease: 'power2.out' });
+            btn.style.setProperty('--mx', (mx / r.width * 100) + '%');
+            btn.style.setProperty('--my', (my / r.height * 100) + '%');
+          });
+          btn.addEventListener('mouseleave', function () {
+            gsap.to(btn, { x: 0, y: 0, duration: .5, ease: 'elastic.out(1, .4)' });
+          });
+        });
+      })();
+
+      /* ===================== GALLERY 3D TILT ===================== */
+      (function tilt() {
+        if (prefersReduced || !window.matchMedia('(pointer: fine)').matches) return;
+        document.querySelectorAll('.polaroid').forEach(function (card) {
+          card.addEventListener('mousemove', function (e) {
+            var r = card.getBoundingClientRect();
+            var relX = (e.clientX - r.left) / r.width - .5;
+            var relY = (e.clientY - r.top) / r.height - .5;
+            card.style.transform = 'rotate3d(' + (-relY) + ',' + relX + ',0, 10deg) translateY(-6px) scale(1.03)';
+          });
+          card.addEventListener('mouseleave', function () {
+            card.style.transform = '';
+          });
+        });
+      })();
+
+      /* ===================== LETTER — candle glow when in view ===================== */
+      (function letterGlow() {
+        var paper = document.querySelector('.letter-paper');
+        if (!paper || !('IntersectionObserver' in window)) return;
+        var obs = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) { if (e.isIntersecting) paper.classList.add('lit'); });
+        }, { threshold: .35 });
+        obs.observe(paper);
+      })();
+
+      /* ===================== COUNTDOWN TICK PULSE ===================== */
+      (function countdownTick() {
+        var ids = ['cd-days', 'cd-hours', 'cd-mins', 'cd-secs'];
+        var prev = {};
+        function watch() {
+          ids.forEach(function (id) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            if (prev[id] !== undefined && prev[id] !== el.textContent) {
+              el.classList.remove('tick');
+              void el.offsetWidth;
+              el.classList.add('tick');
+            }
+            prev[id] = el.textContent;
+          });
+        }
+        setInterval(watch, 500);
+      })();
+
+      /* ===================== SECRET BUTTON — soft flash pulse ===================== */
+      (function secretFlash() {
+        var btn = document.getElementById('secret-btn');
+        var flash = document.getElementById('flash-pulse');
+        if (!btn || !flash) return;
+        btn.addEventListener('click', function () {
+          gsap.fromTo(flash, { opacity: 0 }, { opacity: 1, duration: .25, yoyo: true, repeat: 1, ease: 'power1.inOut' });
+        });
+      })();
 
     })();
 

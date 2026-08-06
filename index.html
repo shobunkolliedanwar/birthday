@@ -359,6 +359,32 @@
       text-align: center;
       padding: 120px 24px 80px;
       position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    #hero::before {
+
+      content: "";
+
+      position: absolute;
+
+      width: 700px;
+      height: 700px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(circle,
+          rgba(255, 192, 203, .18),
+          transparent 70%);
+
+      filter: blur(80px);
+
+      animation: heroGlow 8s ease-in-out infinite;
+
+      z-index: -1;
+
     }
 
     #hero .eyebrow {
@@ -379,11 +405,16 @@
 
     #hero h1 .accent {
       display: block;
-      font-family: var(--font-script);
-      color: var(--primary);
-      font-size: 1.05em;
-      font-weight: 400;
-      margin-top: 6px;
+
+      margin-top: 10px;
+
+      padding: 0 40px;
+
+      line-height: 1.15;
+
+      overflow: visible;
+
+      text-align: center;
     }
 
     #hero .date {
@@ -445,14 +476,119 @@
         glowPulse 3s ease-in-out infinite;
     }
 
+    .glow-text {
+
+      display: inline-block;
+
+      position: relative;
+
+      font-family: var(--font-script);
+
+      font-size: 1.05em;
+
+      font-weight: 400;
+
+      background: linear-gradient(90deg,
+          #ffd9e8 0%,
+          #ffffff 20%,
+          #ffbfd8 50%,
+          #ffffff 80%,
+          #ffd9e8 100%);
+
+      background-size: 300% auto;
+
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+
+      animation:
+        shimmer 6s linear infinite,
+        glowPulse 3s ease-in-out infinite,
+        floating 5s ease-in-out infinite;
+    }
+
+    .glow-text::after {
+
+      content: "✨";
+
+      position: absolute;
+
+      top: -10px;
+
+      right: -22px;
+
+      font-size: 18px;
+
+      animation: sparkle 2.8s ease-in-out infinite;
+
+    }
+
+    @keyframes sparkle {
+
+      0% {
+
+        opacity: 0;
+
+        transform:
+          translateY(10px) scale(.5) rotate(0deg);
+
+      }
+
+      50% {
+
+        opacity: 1;
+
+        transform:
+          translateY(-8px) scale(1) rotate(20deg);
+
+      }
+
+      100% {
+
+        opacity: 0;
+
+        transform:
+          translateY(-18px) scale(.6) rotate(45deg);
+
+      }
+
+    }
+
+    @keyframes glowPulse {
+
+      0% {
+        filter: brightness(.85);
+        text-shadow:
+          0 0 10px rgba(255, 182, 193, .2),
+          0 0 20px rgba(255, 182, 193, .1);
+      }
+
+      50% {
+        filter: brightness(1.25);
+        text-shadow:
+          0 0 20px rgba(255, 255, 255, .9),
+          0 0 35px rgba(255, 182, 193, .8),
+          0 0 60px rgba(255, 182, 193, .45);
+      }
+
+      100% {
+        filter: brightness(.85);
+        text-shadow:
+          0 0 10px rgba(255, 182, 193, .2),
+          0 0 20px rgba(255, 182, 193, .1);
+      }
+
+    }
+
     @keyframes shimmer {
+
       from {
-        background-position: -250% center;
+        background-position: -300% center;
       }
 
       to {
-        background-position: 250% center;
+        background-position: 300% center;
       }
+
     }
 
     @keyframes scrollcue {
@@ -470,6 +606,41 @@
         transform: scaleY(.4);
         opacity: .4;
       }
+    }
+
+    @keyframes heroGlow {
+
+      0% {
+        transform: scale(1);
+        opacity: .7;
+      }
+
+      50% {
+        transform: scale(1.15);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: .7;
+      }
+
+    }
+
+    @keyframes floating {
+
+      0% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-4px);
+      }
+
+      100% {
+        transform: translateY(0);
+      }
+
     }
 
     /* ---------- countdown ---------- */
@@ -1177,7 +1348,12 @@
     <!-- ============ HERO ============ -->
     <section id="hero">
       <div class="eyebrow reveal">For Someone Special</div>
-      <h1 class="reveal">Happy Birthday<span class="accent">Gusnira Putri</span></h1>
+      <h1 class="reveal">
+        Happy Birthday
+        <span class="accent">
+          <span class="glow-text">Gusnira Putri</span>
+        </span>
+      </h1>
       <div class="date reveal">12 August 1994</div>
       <p class="quote reveal">"The world became brighter the day you arrived."</p>
       <div class="scroll-cue reveal"><span>Scroll</span><span class="line"></span></div>

@@ -1397,14 +1397,134 @@
       }
     }
 
-    @media (max-width: 540px) {
+    @media (max-width: 768px) {
+      #hero {
+        padding: 110px 20px 70px;
+      }
+
+      #hero::before {
+        width: 420px;
+        height: 420px;
+      }
+
+      #hero h1 {
+        font-size: clamp(34px, 10vw, 52px);
+        line-height: 1.2;
+      }
+
+      .glow-text {
+        font-size: 1.1em;
+        padding: 0 16px;
+      }
+
+      #hero .quote {
+        max-width: 95%;
+        font-size: 15px;
+      }
+
+      .cd-grid {
+        gap: 10px;
+      }
+
+      .cd-card {
+        width: 72px;
+        padding: 14px 4px;
+      }
+
+      .about-frame {
+        aspect-ratio: 16/10;
+      }
+
+      .timeline-wrap {
+        margin-top: 36px;
+        position: relative;
+      }
+
+      .timeline-wrap::after {
+        content: '← geser untuk lihat lainnya →';
+        display: block;
+        text-align: center;
+        margin-top: 10px;
+        font-size: 10px;
+        letter-spacing: .18em;
+        text-transform: uppercase;
+        color: var(--subtitle);
+        opacity: .6;
+      }
+
+      .timeline-track {
+        min-width: 640px;
+      }
+
+      .tl-item {
+        padding: 0 10px;
+      }
+
+      .gallery-grid {
+        margin-top: 28px;
+      }
+
+      .polaroid {
+        transform: rotate(0deg) !important;
+        padding: 10px 10px 34px;
+      }
+
+      .polaroid:hover,
+      .polaroid:active {
+        transform: rotate(0deg) translateY(-3px) !important;
+      }
+
       .reasons-grid {
         grid-template-columns: 1fr;
       }
 
+      .reason-card {
+        padding: 22px;
+      }
+
+      #dreamsky {
+        min-height: 420px;
+        padding: 64px 20px;
+      }
+
+      .gallery-grid {
+        columns: 1;
+      }
+
+      .letter-paper {
+        padding: 26px;
+      }
+
+      .letter-body {
+        line-height: 2;
+      }
+
+      #final-surprise .fs-line {
+        width: 90%;
+        font-size: 18px;
+      }
+    }
+
+    @media (max-width: 380px) {
       .cd-card {
-        width: 80px;
-        padding: 16px 4px;
+        width: 64px;
+        padding: 12px 2px;
+      }
+
+      .cd-num {
+        font-size: 24px;
+      }
+
+      .cd-grid {
+        gap: 8px;
+      }
+
+      #hero h1 {
+        font-size: clamp(30px, 11vw, 42px);
+      }
+
+      .reason-card {
+        padding: 18px;
       }
     }
 
@@ -1850,11 +1970,25 @@
         <div class="progress-num" id="progress-num">0%</div>
       </div>
       <div class="intro-lines" id="intro-lines">
-        <div class="intro-line" data-line="1">There is someone…</div>
-        <div class="intro-line" data-line="2">…who was born</div>
-        <div class="intro-line big" data-line="3">12 August 1994</div>
-        <div class="intro-line" data-line="4">And today…</div>
-        <div class="intro-line" data-line="5">…the world celebrates her.</div>
+        <div class="intro-line" data-line="1">
+          Before this story begins...
+        </div>
+
+        <div class="intro-line" data-line="2">
+          There's someone I'd like to celebrate today.
+        </div>
+
+        <div class="intro-line big" data-line="3">
+          Gusnira Putri
+        </div>
+
+        <div class="intro-line" data-line="4">
+          Thank you for being born...
+        </div>
+
+        <div class="intro-line" data-line="5">
+          ...because your existence makes this world a little brighter.
+        </div>
       </div>
       <button class="btn" id="intro-gift">Open Your Birthday Gift</button>
     </div>
@@ -2216,11 +2350,11 @@
         var lines = linesEl.querySelectorAll('.intro-line');
         var d = 0;
         lines.forEach(function (line, i) {
-          gsap.to(line, { opacity: 1, y: 0, duration: .8, delay: d, ease: 'power2.out' });
+          gsap.to(line, { opacity: 1, y: 0, duration: 5, delay: d, ease: 'power2.out' });
           d += (i === lines.length - 1) ? 1.0 : 1.1;
         });
         setTimeout(function () {
-          gsap.to(giftBtn, { opacity: 1, duration: .9, ease: 'power2.out' });
+          gsap.to(giftBtn, { opacity: 1, duration: 3, ease: 'power2.out' });
         }, d * 1000 + 200);
       }
 

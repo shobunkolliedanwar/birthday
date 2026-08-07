@@ -2580,21 +2580,43 @@
         }
       })();
 
-      /* ===================== FINAL SURPRISE (≈3 min on page) ===================== */
+      /* ===================== FINAL SURPRISE (≈30 seconds on page) ===================== */
       function startFinalSurpriseTimer() {
         setTimeout(function () {
           var overlay = document.getElementById('final-surprise');
           overlay.classList.add('show');
+
           var candle = document.getElementById('fs-candle');
           var l1 = document.getElementById('fs-line1');
           var l2 = document.getElementById('fs-line2');
           var heart = overlay.querySelector('.fs-heart');
+
+          // BELUM BOLEH DIKLIK
+          overlay.style.pointerEvents = "none";
+          overlay.style.cursor = "default";
+
           gsap.to(candle, { opacity: 1, duration: 1.2 });
           gsap.to(l1, { opacity: 1, duration: 1.4, delay: .6 });
           gsap.to(l2, { opacity: 1, duration: 1.4, delay: 3.4 });
-          gsap.to(heart, { opacity: 1, duration: 1.4, delay: 6.2, onComplete: dropConfetti });
-          setTimeout(function () { overlay.style.cursor = 'pointer'; }, 8000);
-          overlay.addEventListener('click', function () { overlay.classList.remove('show'); });
+
+          gsap.to(heart, {
+            opacity: 1,
+            duration: 1.4,
+            delay: 6.2,
+            onComplete: function () {
+              dropConfetti();
+
+              // BARU BOLEH DIKLIK SETELAH SEMUA TEKS MUNCUL
+              overlay.style.pointerEvents = "auto";
+              overlay.style.cursor = "pointer";
+            }
+          });
+
+          overlay.onclick = function () {
+            // hanya bisa ditutup setelah pointerEvents aktif
+            overlay.classList.remove("show");
+          };
+
         }, 30000);
       }
 
